@@ -192,7 +192,7 @@ function os_pages_menu_contextual_links_alter(&$links, $router_item, $root_path)
       return;
     }
 
-    $links['os_pages-edit'] = menu_get_item('os/pages/'.$node->nid.'/body');
+    $links['os_pages-edit'] = menu_get_item('node/'.$node->nid.'/edit');
     $links = array_reverse($links, true);
   }
   // vsite users skip to here because they don't have access to any of the widget contextual links
@@ -205,10 +205,10 @@ function os_pages_menu_contextual_links_alter(&$links, $router_item, $root_path)
     $node = $router_item['page_arguments'][2];
 
     // we don't want to mess with the links for other content types by accident
-    // only pages are editted at the os/pages/ paths.
+    // only pages are editted at the node/nid/edit paths.
     if ($node->type == 'page') {
       $links = array();
-      $link = menu_get_item('os/pages/'.$node->nid.'/body');
+      $link = menu_get_item('node/'.$node->nid.'/edit');
       if ($link['access']) {
         $links['os_pages-edit'] = $link;
       }
@@ -841,11 +841,11 @@ function os_pages_preprocess_page(&$page) {
     unset($section_links['section-layout'], $section_links['section-header'], $section_links['page-header']);
   }
 
-  $item = menu_get_item('os/pages/' . $node->nid . '/meta');
+  $item = menu_get_item('node/' . $node->nid . '/edit');
   if ($item['access']) {
     $section_links['page-edit'] = array(
       'title' => t('Edit'),
-      'href' => 'os/pages/' . $node->nid . '/meta',
+      'href' => 'node/' . $node->nid . '/edit',
       'query' => drupal_get_destination(),
     );
   }

@@ -682,7 +682,7 @@ function os_preprocess_page(&$vars) {
   // Hide useless tabs.
   if (is_array($vars['tabs']['#primary'])) {
     foreach ($vars['tabs']['#primary'] as $delta => $tab) {
-      if (in_array($tab['#link']['path'], array('node/%/edit', 'node/%/log', 'node/%/revisions'))) {
+      if (in_array($tab['#link']['path'], array('node/%/edit', 'node/%/log'))) {
         unset($vars['tabs']['#primary'][$delta]);
       }
     }
@@ -1008,10 +1008,6 @@ function os_entity_form_after_build($form, $form_state) {
 function os_form_node_form_alter(&$form, $form_state) {
   // Removes "Promoted to front page" checkbox.
   unset($form['options']['promote']);
-
-  // Removes "Revision information" fieldset.
-  $form['revision_information']['#access'] = FALSE;
-
 
   $form['path']['pathauto']['#description'] = t('Uncheck this to create a custom alias below.');
   if (isset($form['field_upload']['und']['add_more']['#value'])) {

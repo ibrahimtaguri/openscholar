@@ -7,15 +7,23 @@
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for node_form.
- *
- * Cleans up some advanced settings and places them in a fieldset.
  */
 function os_revisions_form_node_form_alter(&$form, $form_state) {
-dvm($form);
-dvm($form_state);
-
-  // Removes "Revision information" fieldset.
-  $form['revision_information']['#access'] = TRUE;
-
+  $content_type = $form['#node']->type;
+  if (variable_get("enable_revisions_$content_type", FALSE)) {
+    $form['revision_information']['#access'] = TRUE;
+  }
 }
 
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Removes purl from hook_init's implementations queue since it was already run
+ * during custom_theme.
+ */
+function os_revisions_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'form_node_form_alter') {
+    unset($implementations['os_revisions']);
+    $implementations = array_merge(array('os_revisions' => FALSE), $implementations);
+  }
+}

@@ -56,5 +56,6 @@ features[variable][] = node_preview_page
 features[variable][] = node_submitted_page
 features[variable][] = nodeformscols_field_placements_page_default
 features[variable][] = pathauto_node_page_pattern
+features[variable][] = enable_revisions_page
 spaces[types][] = og
 spaces[types][] = site

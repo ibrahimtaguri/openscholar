@@ -132,3 +132,15 @@ function os_pages_update_7006() {
       ->execute();
   }
 }
+
+/**
+ * Revert strongarm variables to register enable_revisions setting
+ */
+function os_pages_update_7007() {
+  $revert = array(
+    'os_pages' => array(
+      'variable',
+    ),
+  );
+  features_revert($revert);
+}

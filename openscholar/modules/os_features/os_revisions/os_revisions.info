@@ -1,0 +1,3 @@
+name = OpenScholar Content Revisions
+description = Enable content revisions for certain content types.
+core = 7.x

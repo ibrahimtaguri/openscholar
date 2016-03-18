@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * OS Revisions module file.
+ */
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node_form.
+ *
+ * Cleans up some advanced settings and places them in a fieldset.
+ */
+function os_revisions_form_node_form_alter(&$form, $form_state) {
+dvm($form);
+dvm($form_state);
+
+  // Removes "Revision information" fieldset.
+  $form['revision_information']['#access'] = TRUE;
+
+}
+

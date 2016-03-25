@@ -58,6 +58,7 @@ features[variable][] = node_preview_link
 features[variable][] = node_submitted_link
 features[variable][] = nodeformscols_field_placements_link_default
 features[variable][] = pathauto_node_link_pattern
+features[variable][] = enable_revisions_link
 features[views_view][] = os_links
 spaces[types][] = og
 spaces[types][] = site

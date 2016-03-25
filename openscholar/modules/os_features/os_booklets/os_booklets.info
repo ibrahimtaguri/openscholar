@@ -54,6 +54,7 @@ features[variable][] = node_preview_book
 features[variable][] = node_submitted_book
 features[variable][] = nodeformscols_field_placements_book_default
 features[variable][] = pathauto_node_book_pattern
+features[variable][] = enable_revisions_book
 features[views_view][] = os_booklets
 spaces[types][] = og
 spaces[types][] = site

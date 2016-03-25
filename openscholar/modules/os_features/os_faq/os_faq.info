@@ -55,6 +55,7 @@ features[variable][] = node_submitted_faq
 features[variable][] = nodeformscols_field_placements_faq_default
 features[variable][] = os_faq_use_toggle
 features[variable][] = pathauto_node_faq_pattern
+features[variable][] = enable_revisions_faq
 features[views_view][] = os_faq
 spaces[types][] = og
 spaces[types][] = site

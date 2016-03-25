@@ -88,6 +88,7 @@ features[variable][] = node_preview_biblio
 features[variable][] = node_submitted_biblio
 features[variable][] = nodeformscols_field_placements_biblio_default
 features[variable][] = pathauto_node_biblio_pattern
+features[variable][] = enable_revisions_biblio
 features[views_view][] = os_publications
 features[views_view][] = publication_contributors
 features[views_view][] = publication_types

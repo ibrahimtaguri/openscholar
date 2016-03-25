@@ -15,3 +15,16 @@ function os_revisions_uninstall() {
   }
 }
 
+/**
+ * Implements hook_enable().
+ * disable diff module if it's there and enabled.
+ */
+function os_revisions_enable() {
+  if (module_exists('diff')) {
+    module_disable(array('diff'));
+  }
+
+	if (module_exists('registration')) {
+		registry_rebuild();
+	}
+}

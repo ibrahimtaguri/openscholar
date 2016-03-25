@@ -231,5 +231,12 @@ function os_faq_strongarm() {
   $strongarm->value = 'faq/[node:title]';
   $export['pathauto_node_faq_pattern'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'enable_revisions_faq';
+  $strongarm->value = TRUE;
+  $export['enable_revisions_faq'] = $strongarm;
+
   return $export;
 }

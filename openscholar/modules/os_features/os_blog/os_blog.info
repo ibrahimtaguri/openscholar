@@ -52,6 +52,7 @@ features[variable][] = node_preview_blog
 features[variable][] = node_submitted_blog
 features[variable][] = nodeformscols_field_placements_blog_default
 features[variable][] = pathauto_node_blog_pattern
+features[variable][] = enable_revisions_blog
 features[views_view][] = os_blog
 features[views_view][] = os_blog_comments
 files[] = os_blog.test

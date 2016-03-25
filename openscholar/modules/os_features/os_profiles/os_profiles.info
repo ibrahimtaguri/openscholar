@@ -95,6 +95,7 @@ features[variable][] = node_preview_person
 features[variable][] = node_submitted_person
 features[variable][] = nodeformscols_field_placements_person_default
 features[variable][] = pathauto_node_person_pattern
+features[variable][] = enable_revisions_person
 features[views_view][] = os_profiles
 spaces[types][] = og
 spaces[types][] = site

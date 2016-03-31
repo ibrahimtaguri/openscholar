@@ -11,8 +11,8 @@
 function os_revisions_form_node_form_alter(&$form, $form_state) {
   $content_type = $form['#node']->type;
 
-  if (variable_get("enable_revisions_$content_type", FALSE)) {
-    $form['revision_information']['#access'] = TRUE;
+  if (!variable_get("enable_revisions_$content_type", FALSE)) {
+    $form['revision_information']['#access'] = FALSE;
   }
 }
 

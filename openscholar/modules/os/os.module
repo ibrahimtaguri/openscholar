@@ -1010,9 +1010,6 @@ function os_form_node_form_alter(&$form, $form_state) {
   // Removes "Promoted to front page" checkbox.
   unset($form['options']['promote']);
 
-  // Removes "Revision information" fieldset.
-  $form['revision_information']['#access'] = FALSE;
-
   $form['path']['pathauto']['#description'] = t('Uncheck this to create a custom alias below.');
   if (isset($form['field_upload']['und']['add_more']['#value'])) {
     $form['field_upload']['und']['add_more']['#value'] = t('Add media');

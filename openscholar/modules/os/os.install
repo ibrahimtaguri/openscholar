@@ -905,3 +905,11 @@ function os_update_7043() {
   module_enable(array('os_reports'));
   return t('Enabled OS Reports module.');
 }
+
+/**
+ * Install OS Revisions module.
+ */
+function os_update_7044() {
+  module_enable(array('os_revisions'));
+  return t('Enabled OS content revisions module.');
+}

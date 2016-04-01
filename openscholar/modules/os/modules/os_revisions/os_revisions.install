@@ -13,6 +13,7 @@ function os_revisions_uninstall() {
   foreach ($node_types as $node_type) {
     variable_del('enable_revisions_' . $node_type);
   }
+  module_disable(array('node_revision_restrict'));
 }
 
 /**
@@ -24,7 +25,23 @@ function os_revisions_enable() {
     module_disable(array('diff'));
   }
 
-	if (module_exists('registration')) {
-		registry_rebuild();
-	}
+  module_enable(array('node_revision_restrict'));
+
+  if (module_exists('registration')) {
+    registry_rebuild();
+  }
+  else {
+    $apps = array(
+      'os_blog',
+      'os_booklets',
+      'os_faq',
+      'os_links',
+      'os_news',
+      'os_pages',
+      'os_profiles',
+      'os_publications'
+    );
+    $to_revert = array_fill_keys($apps, array('variable'));
+    features_revert($to_revert);
+  }
 }

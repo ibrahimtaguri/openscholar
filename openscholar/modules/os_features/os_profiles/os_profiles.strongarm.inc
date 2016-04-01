@@ -298,5 +298,12 @@ function os_profiles_strongarm() {
   $strongarm->value = TRUE;
   $export['enable_revisions_person'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'restrict_node_revision_number_for_person';
+  $strongarm->value = 10;
+  $export['restrict_node_revision_number_for_person'] = $strongarm;
+
   return $export;
 }

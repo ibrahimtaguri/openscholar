@@ -260,6 +260,9 @@ projects[nice_menus][patch][] = "https://gist.githubusercontent.com/RoySegall/61
 projects[nodeformcols][subdir] = "contrib"
 projects[nodeformcols][version] = 1.0
 
+projects[node_revision_restrict][subdir] = "contrib"
+projects[node_revision_restrict][version] = 1.4
+
 projects[entity_validator][subdir] = "contrib"
 projects[entity_validator][download][type] = git
 projects[entity_validator][download][url] = "https://github.com/Gizra/entity_validator.git"

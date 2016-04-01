@@ -1,3 +1,9 @@
 name = OpenScholar Content Revisions
 description = Enable content revisions for certain content types.
 core = 7.x
+name = OpenScholar: Files
+description = Standardizes OpenScholar File handling
+core = 7.x
+package = OpenScholar
+dependencies[] = os
+dependencies[] = node_revision_restrict

@@ -28,3 +28,9 @@ function os_revisions_module_implements_alter(&$implementations, $hook) {
     $implementations = array_merge(array('os_revisions' => FALSE), $implementations);
   }
 }
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node_revision_revert_confirm form.
+ */
+function os_revisions_form_node_revision_revert_confirm_alter(&$form, $form_state) {
+}

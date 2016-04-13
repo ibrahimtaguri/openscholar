@@ -682,7 +682,7 @@ function os_preprocess_page(&$vars) {
   // Hide useless tabs.
   if (is_array($vars['tabs']['#primary'])) {
     foreach ($vars['tabs']['#primary'] as $delta => $tab) {
-      if (in_array($tab['#link']['path'], array('node/%/edit', 'node/%/log'))) {
+      if (in_array($tab['#link']['path'], array('node/%/edit', 'node/%/log', 'node/%/revisions'))) {
         unset($vars['tabs']['#primary'][$delta]);
       }
     }

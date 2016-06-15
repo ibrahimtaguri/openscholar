@@ -15,7 +15,7 @@ use GitWrapper\GitException;
 function cp_appearance_menu() {
   $items = array();
   $items['cp/appearance'] = array(
-    'title' => 'Appearance',
+    'title' => 'Themes',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('cp_appearance_theme_picker_form'),
     'weight' => 20,

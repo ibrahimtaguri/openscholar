@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * Returns true if the admin panel should default to being closed
+ */
+function admin_panel_is_closed() {
+  return isset($_COOKIE['AdminMenuState']) && !$_COOKIE['AdminMenuState'];
+}
+
+/**
  * Implements hook_preprocess_page().
  *
  * Adds the user_panel angular library.
@@ -9,6 +16,11 @@ function admin_panel_preprocess_page(&$vars) {
 	if (user_is_logged_in() && variable_get('admin_panel_enabled', FALSE)) {
     drupal_add_library('admin_panel','user_panel');
     os_common_angular_apps('UserPanel');
+
+    if (admin_panel_is_closed()) {
+      $vars['classes_array'][] = 'admin-menu-closed';
+    }
+
     drupal_add_js(array('admin_panel' => array('purl_base_domain' => variable_get('purl_base_domain'))), 'setting');
 	}
 }
@@ -25,9 +37,21 @@ function admin_panel_page_build(&$vars) {
     return;
   }
 
+  $classes = array(
+    'menu-container',
+  );
+
+  if (admin_panel_is_closed()) {
+    $classes[] = 'closed';
+  }
+
+  if (isset($_COOKIE['AdminMenuState']) && !$_COOKIE['AdminMenuState']) {
+    $classes[] = 'closed';
+  }
+
   $vars['page_bottom']['admin_menu'] = array(
     '#weight' => 25,
-    '#markup' => '<div class="morph-button no-transition morph-button-sidebar morph-button-fixed" left-menu></div>',
+    '#markup' => '<div class="'.implode(' ', $classes).'" left-menu></div>',
   );
 
   $vars['page_bottom']['user_menu'] = array(
@@ -61,9 +85,9 @@ function admin_panel_library() {
   $cid = drupal_hash_base64(implode("",array_merge(array_filter($spaces_features),$perms)));
 
   $libs['admin_panel']['js'] = array(
-    $path . '/misc/AdminPanelModule.js' => array(),
     $path . '/misc/modernizr.custom.js' => array(),
-    $path . '/misc/uiMorphingButton_fixed.js' => array(),
+    $path . '/misc/simplebar.min.js' => array(),
+    $path . '/misc/AdminPanelModule.js' => array(),
     array(
       'data' => array(
         'paths' => array(
@@ -91,7 +115,6 @@ function admin_panel_library() {
 
   $libs['admin_panel']['css'] = array(
     $path.'/misc/component.css',
-    $path.'/misc/content.css',
     $path.'/misc/admin_panel-menu.css',
   );
 

@@ -19,6 +19,8 @@ class os_boxes_facetapi_vocabulary extends os_boxes_default {
     $options['vocabularies'] = array();
     $options['sort_by'] = 'alpha';
     $options['sort_by_term'] = 'rel';
+    $options['show_count'] = TRUE;
+    $options['as_nav'] = FALSE;
 
     return $options;
   }
@@ -33,6 +35,8 @@ class os_boxes_facetapi_vocabulary extends os_boxes_default {
     $selected_vocab = $this->options['vocabularies'];
     $sort_by = $this->options['sort_by'];
     $sort_by_term = $this->options['sort_by_term'];
+    $as_nav = $this->options['as_nav'];
+    $show_count = $this->options['show_count'];
 
     if (!empty($form_state['values']['bundle'])) {
       // We have the bundle from the AJAX.
@@ -40,6 +44,8 @@ class os_boxes_facetapi_vocabulary extends os_boxes_default {
       $selected_vocab = 'all';
       $sort_by = $form_state['values']['sort_by'];
       $sort_by_term = $form_state['values']['sort_by_term'];
+      $as_nav = $form_state['as_nav'];
+      $show_count = $form_state['show_count'];
     }
 
     $bundles = os_get_bundles(array(OS_PUBLIC_APP, OS_PRIVATE_APP));
@@ -101,6 +107,26 @@ class os_boxes_facetapi_vocabulary extends os_boxes_default {
       '#type' => 'select',
       '#options' => $options_term,
       '#default_value' => $sort_by_term,
+    );
+
+    // Extra option added like taxonomy widget
+    $form['show_count'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Show number of posts'),
+      '#description' => t('Show number of posts tagged to a term next to the term.'),
+      '#default_value' => $show_count,
+    );
+
+    $form['as_nav'] = array(
+      '#type' => 'checkbox',
+      '#default_value' => $as_nav,
+      '#title' => t('Display as a menu'),
+      '#return_value' => TRUE,
+      '#states' => array(
+       'invisible' => array(
+        ':input[name="widget_type"]' => array('value' => 'select'),
+        ),
+       ),
     );
 
     return $form;
@@ -211,7 +237,6 @@ class os_boxes_facetapi_vocabulary extends os_boxes_default {
     // If empty search happened, we will cache the block.
     $use_cache = $this->call_empty_search_if_needed();
     if (!$use_cache || (($block = $this->get_cache()) === FALSE)) {
-
       $block = module_invoke('facetapi', 'block_view', $delta_og_vocab);
       $block['delta'] = $delta;
 
@@ -291,11 +316,22 @@ class os_boxes_facetapi_vocabulary extends os_boxes_default {
         }
 
         $block['content'] = render($block['content']);
+        if ($this->options['show_count'] == FALSE && $this->options['as_nav']) {
+          // If "Show number of posts" is off "but Display as a menu is" on
+          $this->options['additional_classes'] = 'hide-count navigation';
+        } elseif ($this->options['show_count'] == FALSE) {
+          // If both "Show number of posts" and "but Display as a menu is" are off
+          $this->options['additional_classes'] = 'hide-count';
+        } elseif ($this->options['as_nav']) {
+          // If both "Show number of posts" and "but Display as a menu is" are on
+          $this->options['additional_classes'] = 'navigation';
+        }
         if ($use_cache) {
           $this->set_cache($block);
         }
       }
     }
+
     return $block;
   }
 

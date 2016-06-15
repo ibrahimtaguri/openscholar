@@ -556,3 +556,10 @@ function os_basetheme_pager_lite_next($variables) {
 
   return $output;
 }
+
+/**
+ * Override theme_facetapi_count
+ */
+function os_basetheme_facetapi_count($variables) {
+  return '<span class="facetapi-count">(' . (int) $variables['count'] . ')</span>';
+}

@@ -603,7 +603,6 @@ function os_process_node(&$vars) {
   // Hides the "Read more" link if there is no body value.
   $body_items = field_get_items('node', $vars['node'], 'body');
   if ($body_items === FALSE) {
-    unset($vars['content']['links']['node']['#links']['node-readmore']);
     return;
   }
 
@@ -634,17 +633,9 @@ function os_process_node(&$vars) {
   if ($body_shortened && !$trailing_break_tag) {
     $link = $vars['content']['links']['node']['#links']['node-readmore'];
     $link['attributes']['class'][] = 'node-readmore';
-    // Get last position of the last closing marker in teaser.
-    if (preg_match('!</?(?:p)[^>]*>\s*$!i', $vars['content']['body'][0]['#markup'], $match, PREG_OFFSET_CAPTURE)) {
-      $insert_point = $match[0][1];
-      // Insert the link.
-      $vars['content']['body'][0]['#markup'] = substr_replace($vars['content']['body'][0]['#markup'], ' '.l($link['title'], $link['href'], $link), $insert_point, 0);
-    }
 
+    _os_insert_link_into_paragraph($vars['content']['body'][0]['#markup'], $link);
   }
-
-  // Hide the original "Read more" link by removing it from the render array.
-  unset($vars['content']['links']['node']['#links']['node-readmore']);
 }
 
 /**
@@ -1704,6 +1695,12 @@ function os_node_view_alter(&$build) {
  * revisions of a node and hides the link for a single revision.
  */
 function os_contextual_links_view_alter(&$element, $items) {
+
+  // Delete "Remove Widget" from main content region
+  if ($element['#element']['#block']->delta == "main_content") {
+    unset($element['#links']['widget-remove']);
+  }
+
   if (empty($element['#element']['#entity_type']) || $element['#element']['#entity_type'] != 'node') {
     // Not a node element.
     return;
@@ -2913,4 +2910,49 @@ function os_page_build(&$page) {
     $page['content']['system_main']['main']['#markup'] = $warning_msg;
     $main_content_display = TRUE;
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_form_redirect_edit_form_alter(&$form, $form_state) {
+  $form['source']['#element_validate'] = array('os_redirect_element_validate_source');
+
+  if (vsite_get_vsite()) {
+    // Only when we in a vsite context send the user to the settings CP.
+    $form['actions']['cancel']['#href'] = 'cp/settings';
+  }
+}
+
+/**
+ * Overriding the alert message for redirect paths.
+ *
+ * @see redirect_element_validate_source()
+ */
+function os_redirect_element_validate_source($element, &$form_state) {
+  $value = &$element['#value'];
+
+  // Check that the source contains no URL fragment.
+  if (strpos($value, '#') !== FALSE) {
+    form_error($element, t('The source path cannot contain an URL fragment anchor.'));
+  }
+
+  _redirect_extract_url_options($element, $form_state);
+
+  // Disallow redirections from the frontpage.
+  if ($value === '<front>') {
+    form_error($element, t('The source path cannot be the front page.'));
+  }
+
+  // Cannot create redirects for valid paths.
+  if (empty($form_state['values']['override'])) {
+    $menu_item = menu_get_item($value);
+    if ($menu_item && $menu_item['page_callback'] != 'redirect_redirect' && $value == $menu_item['path']) {
+      // Removing the link to create URL aliases.
+      $form_state['storage']['override_messages']['valid-path'] = t('The source path %path is likely a valid path. It is preferred to create URL aliases for existing paths rather than redirects.', array('%path' => $value, '@url-alias' => url('admin/config/search/path/add')));
+      $form_state['rebuild'] = TRUE;
+    }
+  }
+
+  return $element;
 }

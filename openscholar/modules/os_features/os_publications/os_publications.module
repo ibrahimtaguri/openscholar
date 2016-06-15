@@ -725,31 +725,14 @@ function os_publications_alter_year_field(&$form, &$form_state) {
     '#default_value' => $year_coded_value,
   );
 
-  $in_press_year = array_search('In Press', $years);
   $form['biblio_year_coded_extrayear'] = array(
     '#type' => 'textfield',
     '#description' => 'e.g. 2015',
-    '#title' => 'Expected In Press Year',
+    '#title' => 'Year',
     '#size' => 10,
     '#default_value' => $date_value,
-    '#states' => array(
-      // Only show this field when 'biblio_years_text' is used.
-      'visible' => array(
-        ':input[name="biblio_year_coded"]' => array('value' => "{$in_press_year}"),
-      ),
-    ),
     '#weight' => $form['biblio_year_group']['#weight'] + 1,
   );
-
-  // Hide biblio_date field if we are using it for "In Press Extra".
-  if (!empty($form['biblio_date'])) {
-    $form['biblio_date']['#states'] = array(
-      // Only show this field when 'biblio_years_text' is not used.
-      'invisible' => array(
-        ':input[name="biblio_year_coded"]' => array('value' => "{$in_press_year}"),
-      ),
-    );
-  }
 
   // Add validation message for validating the field via JS.
   $form['biblio_year_group']['#suffix'] = '<div id="biblio-year-group-validate">' . t('Input must be in the form YYYY. Only numerical digits are allowed.') . '</div>';
@@ -878,7 +861,7 @@ function os_publications_entity_prepare_view($entities, $type, $langcode) {
   // Load a specific node into the user object for later theming.
   if ($type == 'node') {
     foreach ($entities as $nid => $entity) {
-      if($entity->type == 'biblio' && $entity->biblio_year == 'In Press' && !empty($entity->biblio_date)) {
+      if($entity->type == 'biblio' && ($entity->biblio_year == 'In Press' || $entity->biblio_year == 'In Preparation' || $entity->biblio_year == 'Working Paper' ) && !empty($entity->biblio_date)) {
         $entity->biblio_year .= ", {$entity->biblio_date}";
         $entity->biblio_date = '';
       }
@@ -1077,6 +1060,12 @@ function os_publications_node_view_alter(&$build, $type) {
         $build['field_biblio_image']['#access'] = FALSE;
       }
 
+      // Do not display update time on a newly created node
+      if ($build['#node']->created != $build['#node']->changed) {
+        $build['footer']['#markup'] = "<i>Last updated on " . format_date($build['#node']->changed, $type = 'custom', $format = 'm/d/Y') . "</i>";
+        $build['footer']['#weight'] = 99;
+      }
+
       // Remove the second export links that appear at the bottom of full view
       // of a publication.
       unset($build['links']['biblio_tagged'], $build['links']['biblio_xml'], $build['links']['biblio_bibtex'], $build['links']['biblio_google_scholar']);
@@ -1183,6 +1172,11 @@ function os_publications_node_presave($node) {
   $tags = variable_get('html_title_allowed_elements', array('em', 'sub', 'sup'));
 
   $node->title = substr(strip_tags($text, '<' . implode('><', $tags) . '>'), 0, 255);
+
+  // Ensure created and changed timestamps are synced when the node is new
+  if ($node->is_new) {
+    $node->changed = $node->created;
+  }
 }
 
 /**
@@ -1500,4 +1494,52 @@ function _os_publications_vocabulary_after_build(&$elements) {
   }
   
   return $elements;
+}
+
+/*
+ * Implements hook_views_pre_render
+ *
+ * Add missing first names to contributor objects
+ */
+function os_publications_views_pre_render(&$view) {
+  if ($view->name == "co_author_list") {
+    $i = 0;
+    foreach ($view->result as $r) {
+      if (!$r->biblio_contributor_data_firstname) {
+        if (strstr($r->biblio_contributor_data_name, ",")) {
+          $t = preg_split ("/,\s*/", $r->biblio_contributor_data_name, 2);
+          if (count($t) > 1) {
+            $view->result[$i]->biblio_contributor_data_firstname = $t[1];
+          } else {
+            $view->result[$i]->biblio_contributor_data_firstname = $r->biblio_contributor_data_name;
+          }
+        } else if (strstr($r->biblio_contributor_data_name, " ")) {
+          $t = preg_split ("/\s+/", $r->biblio_contributor_data_name, 2);
+          if (count($t) > 1) {
+            $view->result[$i]->biblio_contributor_data_firstname = $t[0];
+          } else {
+            $view->result[$i]->biblio_contributor_data_firstname = $r->biblio_contributor_data_name;
+          }
+        }
+      } else if (!$r->biblio_contributor_data_lastname) {
+        if (strstr($r->biblio_contributor_data_name, ",")) {
+          $t = preg_split ("/,\s*/", $r->biblio_contributor_data_name, 2);
+          if (count($t) > 1) {
+            $view->result[$i]->biblio_contributor_data_lastname = $t[0];
+          } else {
+            $view->result[$i]->biblio_contributor_data_lastname = $r->biblio_contributor_data_name;
+          }
+        } else if (strstr($r->biblio_contributor_data_name, " ")) {
+          $t = preg_split ("/\s+/", $r->biblio_contributor_data_name, 2);
+          if (count($t) > 1) {
+            $view->result[$i]->biblio_contributor_data_lastname = $t[1];
+          } else {
+            $view->result[$i]->biblio_contributor_data_lastname = $r->biblio_contributor_data_name;
+          }
+        }
+      }
+
+      $i++;
+    }
+  }
 }

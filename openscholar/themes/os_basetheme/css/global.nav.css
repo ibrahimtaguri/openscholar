@@ -709,6 +709,11 @@ ul.nice-menu-down li li.menuparent:hover {
 }
 /* Section Nav */
 
+/* To hide facet taxonomy count */
+.hide-count .facetapi-count {
+    display: none;
+}
+
 #boxes-box-os_pages_section_nav {
     border: 1px solid #ebe3df;
     border-bottom: none;

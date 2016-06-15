@@ -254,8 +254,6 @@ function hwpi_basetheme_node_view_alter(&$build) {
         }
       }
 
-      unset($build['links']['node']);
-
       return;
     }
 

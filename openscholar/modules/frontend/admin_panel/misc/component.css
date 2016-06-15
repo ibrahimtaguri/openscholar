@@ -1,298 +1,194 @@
-/* Morph Button: Default Styles */
-
-.morph-button {
-    position: relative;
-    display: block;
-    margin: 0 auto;
-}
-.morph-button > button {
-    position: relative;
-    padding: 0 1em;
-    border: none;
-    background-color: #e85657;
-    color: #f9f6e5;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-    line-height: 80px;
+.menu-container button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+    text-indent: 100%;
+    white-space: nowrap;
     overflow: hidden;
 }
-.morph-button.open > button {
-    pointer-events: none;
-}
-.morph-content {
-    pointer-events: none;
-}
-.morph-button.open .morph-content {
-    pointer-events: auto;
-}
-/* Common styles for overlay and modal type (fixed morph) */
-
-.morph-button-fixed,
-.morph-button-fixed .morph-content {
-    width: 300px;
-    height: 80px;
-}
-.morph-button-fixed > button {
-    z-index: 1000;
-    width: 100%;
-    height: 100%;
-    -webkit-transition: opacity 0.1s 0.5s;
-    transition: opacity 0.1s 0.5s;
-}
-.morph-button-fixed.open > button {
-    -webkit-transition: opacity 0.1s;
-    transition: opacity 0.1s;
-}
-.morph-button-fixed .morph-content {
+.menu-container {
     position: fixed;
-    z-index: 900;
-    opacity: 0;
-    -webkit-transition: opacity 0.3s 0.5s, width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s, margin 0.4s 0.1s;
-    transition: opacity 0.3s 0.5s, width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s, margin 0.4s 0.1s;
-}
-.morph-button-fixed.open .morph-content {
-    opacity: 1;
-}
-.morph-button-fixed .morph-content > div {
-    visibility: hidden;
-    height: 0;
-    opacity: 0;
-    -webkit-transition: opacity 0.1s, visibility 0s 0.1s, height 0s 0.1s;
-    transition: opacity 0.1s, visibility 0s 0.1s, height 0s 0.1s;
-}
-.morph-button-fixed.open .morph-content > div {
-    visibility: visible;
-    height: auto;
-    opacity: 1;
-    -webkit-transition: opacity 0.3s 0.5s;
-    transition: opacity 0.3s 0.5s;
-}
-
-.morph-button-fixed.open.no-transition .morph-content > div {
-    -webkit-transition: opacity 0s 0s;
-    transition: opacity 0s 0s;
-}
-
-
-.morph-button-fixed.active .morph-content {
-    z-index: 1900;
-}
-/* Transitions for overlay button and sidebar button */
-
-.morph-button-overlay .morph-content,
-.morph-button-sidebar .morph-content {
-    -webkit-transition: opacity 0.3s 0.5s, width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s;
-    transition: opacity 0.3s 0.5s, width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s;
-}
-.morph-button-overlay.open .morph-content,
-.morph-button-sidebar.open .morph-content {
-    -webkit-transition: width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s;
-    transition: width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s;
-}
-
-
-.morph-button-overlay.open.no-transition .morph-content,
-.morph-button-sidebar.open.no-transition .morph-content {
-    -webkit-transition: width 0s 0s, height 0s 0s, top 0s 0s, left 0s 0s;
-    transition: width 0s 0s, height 0s 0s, top 0s 0s, left 0s 0s;
-}
-
-
-/* Morph Button Style: Overlay */
-
-.morph-button.morph-button-overlay {
-    margin: 50px auto;
-}
-.morph-button-overlay .morph-content {
-    overflow: hidden;
-    background: #e85657;
-}
-.morph-button-overlay.open .morph-content {
-    top: 0 !important;
-    left: 0 !important;
-    width: 100%;
+    width: 128px;
     height: 100%;
-}
-/* Morph Button Style: Modal */
-.morph-button-modal::before {
-    position: fixed;
-    top: 0;
     left: 0;
-    z-index: 800;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    content: '';
-    opacity: 0;
-    -webkit-transition: opacity 0.5s;
-    transition: opacity 0.5s;
-    pointer-events: none;
+    top: 0;
+    background-color: #000;
+    transition: left, .125s, ease-in-out, .125s;
+    z-index: 101;
 }
-.morph-button-modal.open::before {
-    opacity: 1;
-    pointer-events: auto;
+.menu-container.closed {
+    left: -128px;
 }
-.morph-button-modal.active::before {
-    z-index: 1800;
-}
-.morph-button-modal .morph-content {
-    overflow: hidden;
-    -webkit-transition: opacity 0.3s 0.5s, width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s, margin 0.4s 0.1s;
-    transition: opacity 0.3s 0.5s, width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s, margin 0.4s 0.1s;
-}
-.morph-button-modal.open .morph-content {
-    top: 50% !important;
-    left: 50% !important;
-    margin: -210px 0 0 -300px;
-    width: 600px;
-    height: 420px;
-    -webkit-transition: width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s, margin 0.4s 0.1s;
-    transition: width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s, margin 0.4s 0.1s;
+button.close-menu-button {
+    width: 18px;
+    height: 50px;
+    background:url('images/close-menu-panel.png') no-repeat center;
+    background-color: #A51C30;
+    position: absolute;
+    top: 50%;
+    left: 119px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    transition-property: left, top, width, height, background-color, content;
+    transition-duration: .125s, .125s, .125s, .125s, .125s, .125s;
+    transition-timing-function: ease-in-out;
+    transition-delay: .125s, .125s, .125s, .125s, .125s, .125s;
+    z-index: 3;
 }
 
-/* Morph Button Style: Sidebar */
 
-.morph-button-sidebar,
-.morph-button-sidebar .morph-content {
+.closed button.close-menu-button {
+    background:url('images/open-menu-panel.png') no-repeat center;
+    background-color: #A51C30;
+    width: 30px;
+    left: 118px;
+}
+button.close-menu-button:hover {
+    width: 30px;
+    background-color: #000;
+    left: 113px;
+}
+.closed button.close-menu-button:hover {
+    width: 42px;
+    left: 120px;
+}
+.close-menu-button-oslogo {
+    background: url('images/os-cp_button.png') no-repeat;
     width: 60px;
     height: 60px;
+    position: absolute;
+    bottom: 20px;
+    left: 33px;
+    z-index: 1;
 }
-.morph-button-sidebar {
-    position: fixed;
-    bottom: 12px;
-    left: 12px;
-    z-index: 102;
+/*
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+    button.close-menu-button:before {
+        left: -17px;
+    }
+    button.close-menu-button:before,
+    .closed button.close-menu-button:before {
+        top: 8px;
+        position: absolute;
+    }
+    button.close-menu-button:hover {
+        top: 51%;
+    }
+}*/
+.top-close {
+    z-index: 100;
+    display: block;
+    overflow: hidden;
+    background: url('/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png') 0 -926px no-repeat;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 3;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 2px;
+    font-size: 0;
 }
-.morph-button-sidebar > button {
-    line-height: 60px;
-    font-size: 1.6em;
+.top-close:hover {
+    color: #a50a05;
+}
+.menu-container ul {
+    list-style: none;
+    margin: 0;
     padding: 0;
 }
-.morph-button-sidebar .morph-content {
-    background: #e85657;
+.menu-container ul li a {
+    display: block;
+    padding: 12px 20px;
+    color: #fff;
 }
-.morph-button-sidebar.open .morph-content {
-    top: 0 !important;
-    left: 0 !important;
-    width: 132px;
-    height: 100%;
+.menu-container ul li:last-child a {
+    box-shadow: inset 0 1px rgba(0, 0, 0, 0.1), inset 0 -1px rgba(0, 0, 0, 0.1);
+}
+/*
+ *  SimpleBar.js - v1.1.9
+ */
+
+.simplebar,
+[data-simplebar-direction] {
     overflow: hidden;
-    -webkit-backface-visibility: hidden;
+    -webkit-overflow-scrolling: touch;
+    /* Trigger native scrolling for mobile, if not supported, plugin is used. */
 }
-/* Let's add some nice easing for all cases */
-
-.morph-button .morph-content,
-.morph-button.open .morph-content {
-    -webkit-transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
-    transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
-}
-/* Helper classes */
-
-.noscroll {
+.simplebar .simplebar-scroll-content,
+[data-simplebar-direction] .simplebar-scroll-content {
     overflow: hidden;
-}
-.morph-button-overlay.scroll .morph-content {
-    overflow-y: scroll;
-}
-.morph-button-sidebar.scroll .morph-content {
-    overflow: auto;
-}
-/* No JS fallback: let's hide the button and show the content */
-
-.no-js .morph-button > button {
-    display: none;
-}
-.no-js .morph-button {
-    margin: 10px 0;
-    float: none;
-}
-.no-js .morph-button,
-.no-js .morph-button .morph-content,
-.no-js .morph-button .morph-content > div {
-    position: relative;
-    width: auto;
-    height: auto;
-    opacity: 1;
-    visibility: visible;
-    top: auto;
-    left: auto;
-    -webkit-transform: none;
-    transform: none;
-    pointer-events: auto;
-}
-.no-js .morph-button .morph-content .icon-close {
-    display: none;
-}
-.no-js .morph-button-sidebar {
-    width: 300px;
-    position: fixed;
-    top: 0;
+    position: absolute;
     left: 0;
-    margin: 0;
-    height: 100%;
-    background: #e85657;
-    overflow: auto;
+    right: 0;
+    top: 38px;
+    bottom: 0;
+    -ms-overflow-style: none;
+    /* hide browser scrollbar on IE10+ */
 }
-.no-transition {
-    -webkit-transition: none !important;
-    transition: none !important;
-}
-/* Media Queries */
+/* hide browser scrollbar on Webkit (Safari & Chrome) */
 
-@media screen and (max-width: 600px) {
-    .morph-button-modal.open .morph-content {
-        top: 0% !important;
-        left: 0% !important;
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        overflow-y: scroll;
-        -webkit-transition: width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s;
-        transition: width 0.4s 0.1s, height 0.4s 0.1s, top 0.4s 0.1s, left 0.4s 0.1s;
-    }
+.simplebar-scroll-content::-webkit-scrollbar {
+    display: none;
 }
-@media screen and (max-width: 400px) {
-    .morph-button-fixed,
-    .morph-button-fixed .morph-content {
-        width: 200px;
-        height: 80px;
-    }
-    .morph-button-fixed > button {
+.simplebar-scroll-content {
+    height: auto !important;
+    width: 128px !important;
+}
+.simplebar-track {
+    z-index: 99;
+    position: absolute;
+    top: 38px;
+    right: 0;
+    bottom: 0;
+    width: 11px;
+}
+.simplebar-track .simplebar-scrollbar {
+    position: absolute;
+    right: 0;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    min-height: 10px;
+    width: 7px;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    opacity: 0;
+    -webkit-transition: opacity 0.2s linear;
+    -moz-transition: opacity 0.2s linear;
+    -o-transition: opacity 0.2s linear;
+    -ms-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear;
+    background: #fff;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+}
+.simplebar-track:hover .simplebar-scrollbar {
+    /* When hovered, remove all transitions from drag handle */
+    
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+    opacity: 0.7;
+    -webkit-transition: opacity 0 linear;
+    -moz-transition: opacity 0 linear;
+    -o-transition: opacity 0 linear;
+    -ms-transition: opacity 0 linear;
+    transition: opacity 0 linear;
+}
+.simplebar-track .simplebar-scrollbar.visible {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+    opacity: 0.7;
+}
+@media screen and (max-width: 770px) {
+    .content-style-overlay {
         font-size: 75%;
     }
-    .morph-button-sidebar > button {
-        font-size: 1.6em;
-    }
-    .morph-button-inflow .morph-content .morph-clone {
-        font-size: 0.9em;
-    }
-    .morph-button-modal-4,
-    .morph-button-modal-4 .morph-content {
-        width: 220px;
-        height: 120px;
-    }
-    .morph-button-modal-4 > button {
-        font-size: 100%;
-        line-height: 50px;
-    }
-    .morph-button-modal-4 > button span {
-        display: block;
-    }
-    .morph-button-modal-4 .morph-clone {
-        right: 83px;
-        bottom: 26px;
-    }
-    .morph-button-sidebar,
-    .morph-button-sidebar .morph-content {
-        width: 100% !important;
-        height: 60px !important;
-    }
-    .morph-button-sidebar {
-        bottom: 0px;
-        left: 0px;
-    }
-    .morph-button-sidebar.open .morph-content {
-        height: 100% !important;
+    .content-style-overlay .icon-close {
+        top: 5px;
+        right: 5px;
     }
 }

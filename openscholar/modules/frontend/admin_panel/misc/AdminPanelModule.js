@@ -12,11 +12,17 @@
        cid = Drupal.settings.admin_panel.cid + Drupal.settings.version.adminPanel;
        uid = Drupal.settings.admin_panel.user;
                     
-    }).service('adminMenuStateService', ['$sessionStorage', function ($ss) {
+    }).service('adminMenuStateService', ['$sessionStorage', '$cookies', function ($ss, $cookies) {
       $ss['menuState'] = $ss['menuState'] || {};
+      var cookieConfig = {
+        path: Drupal.settings.basePath + Drupal.settings.pathPrefix
+      };
 
       this.SetState = function (key, state) {
         $ss['menuState'][key] = state;
+        if (key == 'main') {
+          $cookies.put('AdminMenuState', state?1:0, cookieConfig)
+        }
       }
 
       this.GetState = function (key) {
@@ -47,23 +53,8 @@
       // Check for the menu data in local storage.
       if ($localStorage.admin_menu[uid][vsite][cid]) {
         $scope.admin_panel = $localStorage.admin_menu[uid][vsite][cid];
-        
-        if ($menuState.GetState('main')) {
-          // Turn off transitions and toggle open, there are a bunch of damn set-timeouts in morphbutton so we need to delay things here.
-          window.setTimeout(function () {
-            morphButton.openTransition = false;
-            morphButton.toggle();
-            morphButton.openTransition = true;
-            jQuery('.morph-button').addClass('scroll');
-          },1);  
-          
-          window.setTimeout(function () {
-            jQuery('.morph-button').removeClass('no-transition');
-          },1000);
-        } else {
-          jQuery('.morph-button').removeClass('no-transition');
-        }
-        
+
+        $scope.open = $menuState.GetState('main');
         return;
       }
       
@@ -80,12 +71,7 @@
           $localStorage.admin_menu[uid][vsite] = {};
           $localStorage.admin_menu[uid][vsite][cid] = response.data.data;
           $scope.admin_panel = response.data.data;
-          if ($menuState.GetState('main')) {
-            morphButton.toggle();
-          } else {
-        	  // Set the menu state to closed.
-            jQuery('.morph-button').addClass('scroll');
-          }
+          $scope.open = $menuState.GetState('main');
         }); 
       
      
@@ -158,28 +144,27 @@
         templateUrl: paths.adminPanelModuleRoot+'/templates/admin_menu.html?vers='+Drupal.settings.version.adminPanel,
         controller: 'AdminMenuController',
         link: function(scope, element, attrs) {
-          morphButton = new UIMorphingButton(element[0], {
-            closeEl : '.icon-close',
-            closeEl2 : '.close-panel',
-            onBeforeOpen : function() {
-              // push main admin_panel
-              jQuery('#page_wrap, .page-cp #page, .page-cp #branding').addClass('pushed');
-            },
-            onAfterOpen : function() {
-              // add scroll class to main el
-              jQuery('.morph-button').addClass('scroll');
-              $t(function () {
-                $menuState.SetState('main', true);
-              }, 1);
-            },
-            onBeforeClose : function() {
-              jQuery('.morph-button').removeClass('scroll');
-              jQuery('#page_wrap, .page-cp #page, .page-cp #branding').removeClass('pushed');
-              $t(function () {
-                $menuState.SetState('main', false);
-              }, 1)
-            }
+          angular.element(element[0].querySelectorAll('.close-menu-panel')).click(function () {
+            scope.open = !scope.open;
+            $menuState.SetState('main', scope.open);
+            setClass();
           });
+          var body = angular.element(document).find('body');
+          angular.element(element[0].querySelectorAll('#cssmenu')).simplebar();
+
+          function setClass() {
+            if (scope.open) {
+              element.removeClass('closed');
+              body.removeClass('admin-menu-closed');
+            }
+            else {
+              element.addClass('closed');
+              body.addClass('admin-menu-closed');
+            }
+          }
+
+          scope.open = $menuState.GetState('main');
+          setClass();
         }
       };
    }]).directive('addLocation', function() {
@@ -232,4 +217,9 @@
         };
       }]);
   
+ 
+  
 })(jQuery);
+
+
+ 

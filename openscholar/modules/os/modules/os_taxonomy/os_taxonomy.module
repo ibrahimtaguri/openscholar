@@ -473,7 +473,7 @@ function theme_os_taxonomy_vocabulary_item_list($variables) {
     }
 
     if (!empty($options['widget_type']) && $options['widget_type'] == 'select') {
-      $data[$tid] = '- ' . $term->name;
+      $data[$tid] = '' . $term->name;
       // The attached number to the term name.
       $number = NULL;
       if ($options['show_count'] || !$options['show_empty_terms']) {
@@ -942,11 +942,11 @@ function os_taxonomy_build_child_item($items, $parent, $options) {
     }
 
     if ($options['widget_type'] == 'select') {
-      $hierarchy = '-';
-      for ($i = 0; $i <= $item->depth; $i++) {
-        $hierarchy .= '-';
+      $hierarchy = '';
+      for ($i = 0; $i < $item->depth; $i++) {
+        $hierarchy .= '&nbsp;&nbsp;&nbsp;&nbsp;';
       }
-      $content[$item->tid] = $hierarchy . ' ' . $item->name;
+      $content[$item->tid] = $hierarchy . $item->name;
       $content[$item->tid] .= $number ? ' (' . $number . ')' : '';
 
       if (!empty($item->below)) {
@@ -1269,7 +1269,7 @@ function os_taxonomy_count_attached_nodes_query_object($tid, $node_bundles = arr
  *
  * @return SelectQuery
  */
-function os_taxonomy_count_attached_entities_query_object($tid, $bundles = array()) {
+function os_taxonomy_count_attached_entities_query_object($tid, $bundles = array(), $list_all = FALSE) {
   $query = db_select('field_data_og_vocabulary', 'ogv');
   $query->condition('og_vocabulary_target_id', $tid, is_array($tid)?'IN':"=")
     ->distinct()
@@ -1295,8 +1295,8 @@ function os_taxonomy_count_attached_entities_query_object($tid, $bundles = array
     $query->condition($node_published);
   }
 
-  // In case the bundle is of the type "event", filter by the type of the event.
-  if (!empty($bundles) && is_array($bundles) && strpos(reset($bundles), 'event') !== FALSE && count($bundles) == 1) {
+  // In case the bundle is of the type "event" and not "All post" type, filter by the type of the event.
+  if (!empty($bundles) && is_array($bundles) && strpos(reset($bundles), 'event') !== FALSE && count($bundles) == 1 && $list_all == FALSE) {
     $query->leftJoin('field_data_field_date', 'fd', '(ogv.entity_id = fd.entity_id)');
     $event_type = reset($bundles);
 
@@ -1381,7 +1381,9 @@ function os_taxonomy_count_attached_entities($tid, $bundles = array()) {
  *    Array of tagged node IDs.
  */
 function os_taxonomy_list_attached_entities($tid, $bundles = array(), $range = NULL, $offset = NULL) {
-  $query = os_taxonomy_count_attached_entities_query_object($tid, $bundles);
+  // Showing all entities
+  $list_all = TRUE;
+  $query = os_taxonomy_count_attached_entities_query_object($tid, $bundles, $list_all);
 
   // Order by weight only if "nodeorder" is on and order has been set.
   if (module_exists('nodeorder') && _os_taxonomy_noderoder_exists($tid)) {

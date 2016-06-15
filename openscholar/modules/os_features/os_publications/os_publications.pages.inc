@@ -50,16 +50,22 @@ function os_publications_overview() {
     // Change the page title to match the menu entry.
     ctools_include('menu', 'os');
 
-    if (!$menu_item = os_menu_load_link_path($_GET['q'])) {
+    $item = menu_get_item();
+    $menu_item = os_menu_load_link_path($_GET['q']);
 
-      if (preg_match('/publications\/(type|year|author)/', $_GET['q'])) {
-        return $output;
+    if (count($item['map']) > 1) {
+      // This is a sub patch of the publications. Check if the router is a valid
+      // one.
+      if (!$menu_item) {
+        if (preg_match('/publications\/(type|year|author)/', $_GET['q'])) {
+          return $output;
+        }
+
+        // This could a non valid menu item or non-exiting publication.
+        drupal_set_title('');
+        drupal_not_found();
+        drupal_exit();
       }
-
-      // This could a non valid menu item or non-exiting publication.
-      drupal_set_title('');
-      drupal_not_found();
-      drupal_exit();
     }
 
     drupal_set_title($menu_item['title']);

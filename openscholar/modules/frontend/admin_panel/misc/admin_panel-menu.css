@@ -1,11 +1,3 @@
-.morph-button-sidebar .morph-content {
-    background: url('images/os-cp_button.png') no-repeat 47% 99%;
-    background-color: #111;
-}
-.morph-button > button {
-    background: url('images/os-cp_button.png') no-repeat;
-    background-color: #111;
-}
 html,
 body {
     height: 100%;
@@ -31,54 +23,54 @@ body.overlay {
     position: relative;
     width: auto;
 }
-.page-cp #branding.no-transition,
-.page-cp #page.no-transition,
-.page_wrap.no-transition {
-    -webkit-transition: none;
-    transition: none;
+/* PAGE WHEN MENU IS OPEN */
+
+.page-cp #page {
+    margin-left: 150px;
+    width: 85%;
+    transition-property: margin-left, width;
+    transition-duration: .125s;
+    transition-timing-function: ease-in-out;
+    transition-delay: .125s;
 }
 .page-cp #branding {
     position: relative;
-    margin-left: 40px;
-}
-.page-cp #branding.pushed {
     margin-left: 110px;
-}
-.no-js .page-cp #branding,
-.no-js .page-cp #page,
-.no-js .page_wrap {
-    width: calc(100% - 300px);
-    right: 0;
-}
-.page-cp #branding.pushed,
-.page-cp #page.pushed {
-    -webkit-transform: translateX(15px);
-    transform: translateX(15px);
-}
-.page-cp #page {
-    width: 90%;
-    margin-left: 80px;
-    margin-right: 0;
-}
-.page-cp #page.pushed {
-    margin-left: 150px;
-    width: 80%;
-}
-.admin-menu-homeicon {
-    position: absolute;
-    left: 10px;
-    top: 7px;
-    width: 25px;
-    height: 25px;
-    background: url('images/home_button.png') no-repeat;
-    background-size: 25px 25px;
-     text-indent:-10000px;
+    transition-property: margin-left;
+    transition-duration: .125s;
+    transition-timing-function: ease-in-out;
+    transition-delay: .125s;
 }
 #branding ul.primary {
-    margin: 0 10% 0 !important;
+    margin: 0 15% 0 !important;
+    transition-property: margin;
+    transition-duration: .125s;
+    transition-timing-function: ease-in-out;
+    transition-delay: .125s;
 }
-#branding.pushed ul.primary {
-    margin: 0 20% 0 !important;
+/* PAGE WHEN MENU IS CLOSED */
+
+.admin-menu-closed.page-cp #page {
+    margin-left: 60px;
+    width: 94%;
+}
+.admin-menu-closed.page-cp #branding {
+    margin-left: 20px;
+}
+.admin-menu-closed #branding ul.primary {
+    margin: 0 6% 0 !important;
+}
+.admin-menu-homeicon {
+    display: block;
+    width: 55px;
+    height: 38px;
+    position: fixed;
+    z-index: 102;
+    background: url('images/home_button.png') no-repeat 10px 1px;
+    background-color: #000;
+    text-indent: -10000px;
+    left: 0;
+    top: 0;
 }
 /* MENU SPECIFIC */
 
@@ -91,30 +83,35 @@ body.overlay {
     padding: 0;
     border: 0;
     list-style: none;
-    line-height: 1;
+    line-height: 0;
     display: block;
-    position: relative;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     font-style: normal;
 }
+#cssmenu ul li a,
+#cssmenu ul li span {
+    line-height: 1;
+}
 #cssmenu {
     font-family: helvetica;
     color: #ffffff;
-    margin-top: 25px;
+}
+#cssmenu ul {
+    z-index: 2;
+    position: relative;
 }
 #cssmenu ul ul {
     display: none;
     background-color: #49505a;
 }
-
 .align-right {
     float: right;
 }
 #cssmenu > ul > li > span {
     cursor: pointer;
     z-index: 2;
-    font-size: 13px;
+    font-size: 12px;
     text-decoration: none;
     color: #ffffff;
     -webkit-transition: color .2s ease;
@@ -133,12 +130,12 @@ body.overlay {
 }
 #cssmenu li.heading.has-sub,
 #cssmenu li.heading.submenu {
-    background: url('/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 110px -1009px;
+    background: url('/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 109px -1009px;
     background-color: #444;
 }
 #cssmenu li.heading.has-sub.open,
 #cssmenu li.heading.submenu.open {
-    background: url('/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 110px -983px;
+    background: url('/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 109px -983px;
     background-color: #444;
 }
 #cssmenu li.heading.parent,
@@ -150,7 +147,7 @@ body.overlay {
 #cssmenu .heading {
     cursor: pointer;
     z-index: 2;
-    font-size: 13px;
+    font-size: 12px;
     text-decoration: none;
     color: #fff;
     -webkit-transition: color .2s ease;
@@ -159,7 +156,7 @@ body.overlay {
     box-shadow: inset 0 1px rgba(0, 0, 0, 0.1);
 }
 [toggle-open] {
-    padding: 10px !important;
+    padding: 10px 10px 10px 8px !important;
 }
 #cssmenu ul ul li span.close-siblings,
 #cssmenu ul ul li a {
@@ -193,7 +190,7 @@ body.overlay {
     z-index: 10;
     display: inline-block;
     font-family: helvetica;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
 }
 #topRightMenu {
@@ -207,7 +204,7 @@ body.overlay {
 }
 .topRight_subMenu {
     margin-top: 34px;
-    font-size: 13px;
+    font-size: 12px;
     display: none;
     padding: 0;
 }
@@ -215,9 +212,9 @@ body.overlay {
     margin: 0;
     list-style-type: none;
     background-color: #49505a;
+    width: 152px;
 }
 .topRight_subMenu li {
-
     background: #6C7A89;
 }
 .topRight_subMenu ul.user-menu > li > a {
@@ -225,7 +222,6 @@ body.overlay {
     text-decoration: none;
     display: block;
     width: 100%;
-
 }
 .topRight_subMenu li a.text_link {
     color: #215990;
@@ -241,7 +237,7 @@ body.overlay {
 }
 .topRight_subMenu ul.user-menu > li > a,
 #user-name,
-.my-sites-click{
+.my-sites-click {
     padding: 5px 10px;
 }
 .topRight_subMenu li.slate {
@@ -250,7 +246,6 @@ body.overlay {
 .topRight_subMenu li.notifications {
     position: relative;
 }
-
 .slate.alert {
     background: #EF0812;
     position: absolute;
@@ -329,7 +324,6 @@ td.user-site-controls {
 .my-sites {
     border-top: 1px solid #DADADA;
 }
-
 .close-user-menu {
     position: absolute;
     top: 6px;
@@ -364,7 +358,7 @@ td.user-site-controls {
     background-color: #FF3E00;
 }
 .btton:visited {
-   color: #FFF;
+    color: #FFF;
 }
 /* Table styling*/
 

@@ -182,7 +182,14 @@ function os_pages_menu_contextual_links_alter(&$links, $router_item, $root_path)
       return;
     }
 
+    // add revisions link if user has permissions and the node has them
+    $item = menu_get_item('node/' . $node->nid . '/revisions');
+    if (count(node_revision_list($node)) && $item['access']) {
+      $links['page-revisions'] = $item;
+    }
+
     $links['os_pages-edit'] = menu_get_item('node/'.$node->nid.'/edit');
+
     $links = array_reverse($links, true);
   }
   // vsite users skip to here because they don't have access to any of the widget contextual links

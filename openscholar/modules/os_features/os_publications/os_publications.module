@@ -887,6 +887,7 @@ function os_publications_biblio_entry_alter(&$entry, $node) {
   }
   $entry['entry']['#markup'] = _os_publications_biblio_entry_alter($entry['entry']['#markup'], $node);
   $entry['#node'] = $node;
+  $entry['#entity_type'] = 'node';
   // Attach the abstract slider.
   _os_publications_attach_abstract($entry, $node, 'entry');
   // Attach the notes if the user chooses to show them.

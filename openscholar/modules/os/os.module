@@ -1698,7 +1698,7 @@ function os_node_view_alter(&$build) {
 function os_contextual_links_view_alter(&$element, $items) {
 
   // Delete "Remove Widget" from main content region
-  if ($element['#element']['#block']->delta == "main_content") {
+  if (isset($element['#element']['#block']) && $element['#element']['#block']->delta == "main_content") {
     unset($element['#links']['widget-remove']);
   }
 

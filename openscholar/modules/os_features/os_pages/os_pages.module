@@ -184,7 +184,7 @@ function os_pages_menu_contextual_links_alter(&$links, $router_item, $root_path)
 
     // add revisions link if user has permissions and the node has them
     $item = menu_get_item('node/' . $node->nid . '/revisions');
-    if (count(node_revision_list($node)) && $item['access']) {
+    if ((count(node_revision_list($node)) > 1) && $item['access']) {
       $links['page-revisions'] = $item;
     }
 
